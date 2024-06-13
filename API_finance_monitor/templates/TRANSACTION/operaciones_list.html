@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title %}Finance Monitor{% endblock %}
+
+{% block content %}
+  <h2>View Module » Operations Management</h2>
+
+  <p>
+    <a href="{% url 'operation_add' %}">Add Operations</a>
+  </p>
+
+  <table border="1">
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Fecha Creacion</th>
+        <th>Categoria</th>
+        <th>Subcategoria</th>
+        <th>Fecha Pago</th>
+        <th>Monto</th>              
+      </tr>
+    </thead>
+    <tbody>
+      {% for operation in operations %}
+        <tr>
+          <td><a href="{% url 'operation_change' operation.pk %}">{{ operation.name }}</a></td>
+          <td>{{ operation.fecha_creacion }}</td>
+          <td>{{ operation.category }}</td>
+          <td>{{ operation.subcategory }}</td>
+          <td>{{ operation.fecha_pago }}</td>
+          <td>{{ operation.monto }}</td>                 
+        </tr>
+      {% empty %}
+        <tr>
+          <td colspan="4">No operations in the database. <a href="{% url 'operation_add' %}">Add the first operation</a>.</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+{% endblock %}
