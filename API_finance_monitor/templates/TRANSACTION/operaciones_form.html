@@ -15,13 +15,7 @@
       
       <tr>
         <th><label for="id_fecha_creacion">Fecha de creación:</label></th>              
-        <td>
-            {% if form.instance.pk is None %}
-              {{ form.fecha_creacion }}
-            {% else %}
-              <input type="text" id="id_fecha_creacion" name="fecha_creacion" value="{{ form.instance.fecha_creacion|date:"d-m-Y" }}">
-            {% endif %} 
-          </td>
+        <td><input type="date" id="id_fecha_creacion" name="fecha_creacion" value="{{ form.instance.fecha_creacion|date:"Y-m-d" }}"></td> 
       </tr>
       
       <tr>
@@ -35,19 +29,13 @@
       </tr>
       
       <tr>
-        <th><label for="id_fecha_pago">Fecha de pago:</label></th>
-          <td>
-            {% if form.instance.pk is None %} 
-              {{ form.fecha_pago }}
-            {% else %}
-              <input type="text" id="id_fecha_pago" name="fecha_pago" value="{{ form.instance.fecha_pago|date:"d-m-Y" }}">
-            {% endif %}
-          </td>
-      </tr> 
-      
-      <tr>
-        <th><label for="id_monto">Monto:</label></th>
-          <td>{{ form.monto }}</td>      
+        <th><label for="id_fecha_pago">Fecha de pago:</label></th>        
+        <td><input type="date" id="id_fecha_pago" name="fecha_pago" value="{{ form.instance.fecha_pago|date:"Y-m-d" }}"></td>        
+      </tr>
+    
+      <th><label for="id_monto">Monto:</label></th>
+          <td>{{ form.monto }}</td>
+           
       </tr>             
     </table>
 
