@@ -7,7 +7,8 @@ class OperacionesForm(forms.ModelForm):
         fields = ('name','fecha_creacion','category','subcategory','fecha_pago','monto')
         widgets = {
              'fecha_creacion': forms.DateInput(attrs={'type': 'date'}),
-             'fecha_pago': forms.DateInput(attrs={'type': 'date'})                      
+             'fecha_pago': forms.DateInput(attrs={'type': 'date'}),
+             'monto': forms.NumberInput(attrs={'class': 'currency-input', 'step': '0.01'})                     
         }
 
     def __init__(self,*args,**kwargs):

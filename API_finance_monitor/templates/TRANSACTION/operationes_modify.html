@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+  <h2>Modify Form</h2>
+
+  <form method="post" id="operacionesForm" data-subcategories-url="{% url 'ajax_load_subcategories' %}" novalidate>
+      
+    {% csrf_token %}
+    <fieldset>
+    <legend>Operation</legend>
+    <table>
+      <tr>
+          <th><label for="id_name">Nombre:</label></th>
+          <td>{{ form.name }}</td>
+      </tr>
+      
+      <tr>
+        <th><label for="id_fecha_creacion">Fecha de creación:</label></th>              
+        <td><input type="date" id="id_fecha_creacion" name="fecha_creacion" value="{{ form.instance.fecha_creacion|date:"Y-m-d" }}"></td> 
+      </tr>
+      
+      <tr>
+        <th><label for="id_category">Categoría:</label></th>
+        <td>{{ form.category }}</td>
+      </tr>
+      
+      <tr>
+        <th><label for="id_subcategory">Subcategoría:</label></th>
+        <td>{{ form.subcategory }}</td>
+      </tr>
+      
+      <tr>
+        <th><label for="id_fecha_pago">Fecha de pago:</label></th>        
+        <td><input type="date" id="id_fecha_pago" name="fecha_pago" value="{{ form.instance.fecha_pago|date:"Y-m-d" }}"></td>        
+      </tr>
+    
+      <th><label for="id_monto">Monto:</label></th>
+          <td>{{ form.monto }}</td>
+           
+      </tr>             
+    </table>
+    </fieldset>
+    <br>
+    <hr>
+    <br>
+
+    <button type="submit">Save</button>    
+    <a href="{% url 'operation_changelist' %}">Nevermind</a>
+  </form>
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+<script>
+    $("#id_category").change(function () {
+      var url = $("#operacionesForm").attr("data-subcategories-url");  
+      var categoriaId = $(this).val();  
+
+      $.ajax({                      
+        url: url,                    
+        data: {
+          'category': categoriaId       
+        },
+        success: function (data) {  
+          $("#id_subcategory").html(data);  
+        }
+      });
+
+    });
+  </script>
+
+{% endblock %}

@@ -5,6 +5,10 @@ from .forms import OperacionesForm
 from django.http import HttpResponse
 from django.utils.text import slugify
 from .models import *
+import json
+from django.http import HttpResponseBadRequest
+from django.http import JsonResponse
+from django.template.loader import render_to_string
 
 # Create your views here.
 
@@ -27,15 +31,16 @@ class OperacionesListView(ListView):
 class OperacionesCreateView(CreateView):
      model = Operaciones
      form_class = OperacionesForm
-     success_url = reverse_lazy('operation_changelist')    
+     success_url = reverse_lazy('operation_changelist')
+     template_name ='TRANSACTION/operaciones_form.html'    
 
 class OperacionesUpdateView(UpdateView):
     model = Operaciones
     form_class = OperacionesForm
-    success_url = reverse_lazy('operation_changelist') 
+    success_url = reverse_lazy('operation_changelist')
+    template_name ='TRANSACTION/operationes_modify.html'      
 
 def load_subcategories(request):
-    category_id = request.GET.get('category')
-    subcategorys = Subcategory.objects.filter(category_id=category_id).order_by('name')
-    return render(request,'API_finance_monitor/branch_dropdown_list_options.html',{'subcategorys': subcategorys})
-
+     category_id = request.GET.get('category')
+     subcategorys = Subcategory.objects.filter(category_id=category_id).order_by('name')
+     return render(request,'API_finance_monitor/branch_dropdown_list_options.html',{'subcategorys': subcategorys})

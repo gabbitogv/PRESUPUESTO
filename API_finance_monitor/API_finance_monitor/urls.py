@@ -18,9 +18,10 @@ from django.contrib import admin
 from django.urls import path,include
 from TRANSACTION.views import Inicio,Ingresos
 
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',Inicio.as_view(),name = ''),
     path('ingreso',Ingresos.as_view(),name = 'ingresos'),
-    path('entry/', include('TRANSACTION.urls')),      
+    path('entry/', include('TRANSACTION.urls')),        
 ]

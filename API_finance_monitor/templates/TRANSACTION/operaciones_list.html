@@ -3,49 +3,78 @@
 {% block title %}Finance Monitor{% endblock %}
 
 {% block content %}
-  
-  <h2>View Module » Operations Management</h2>
 
-  <div>
-    <button id="add-operations-btn" type="button">Add Operations</button>
-    <button id="mod-operations-btn" type="button">Modify Operations</button>
-  </div>
-  <br>
+{% load custom_filters %}
 
-  <table border="1">
+<style>
+    .text-center {
+        text-align: center;
+    }
+</style>
+
+<h2>View Module » Operations Management</h2>
+
+<div>
+    <button id="add-operations-btn" type="button" class="btn btn-primary">Add Operations</button>
+    <button id="mod-operations-btn" type="button" class="btn btn-secondary">Modify Operations</button>
+</div>
+<br>
+
+<table border="1">
     <thead>
-      <tr>
-        <th>Nombre</th>
-        <th>Fecha Creacion</th>
-        <th>Categoria</th>
-        <th>Subcategoria</th>
-        <th>Fecha Pago</th>
-        <th>Monto</th>              
-      </tr>
+        <tr>
+            <th>Nombre</th>
+            <th>Fecha Creacion</th>
+            <th>Categoria</th>
+            <th>Subcategoria</th>
+            <th>Fecha Pago</th>
+            <th>Monto</th>
+            <th>Seleccionar</th>
+        </tr>
     </thead>
     <tbody>
-      {% for operation in operations %}
-        <tr>
-          <td><a href="{% url 'operation_change' operation.pk %}">{{ operation.name }}</a></td>
-          <td>{{ operation.fecha_creacion }}</td>
-          <td>{{ operation.category }}</td>
-          <td>{{ operation.subcategory }}</td>
-          <td>{{ operation.fecha_pago }}</td>
-          <td>{{ operation.monto }}</td>
-          <td><input type="checkbox" class="operation-checkbox" data-pk="{{ operation.pk }}"></td>                 
-        </tr>
-      {% empty %}
-        <tr>
-          <td colspan="7">No operations in the database. <a href="{% url 'operation_add' %}">Add the first operation</a>.</td>
-        </tr>
-      {% endfor %}
+        {% for operation in operations %}
+            <tr>                
+                <td><a href="">{{ operation.name }}</a></td>
+                <td>{{ operation.fecha_creacion }}</td>
+                <td>{{ operation.category }}</td>
+                <td>{{ operation.subcategory }}</td>
+                <td>{{ operation.fecha_pago }}</td>
+                <td>{{ operation.monto | currency_format }}</td>
+                <td class="text-center"><input type="checkbox" class="operation-checkbox" data-pk="{{ operation.pk }}"></td>
+            </tr>
+        {% empty %}
+            <tr>
+                <td colspan="7">No operations in the database. <a href="{% url 'operation_add' %}">Add the first operation</a>.</td>
+            </tr>
+        {% endfor %}
     </tbody>
-  </table>
+</table>
 
-  <script>     
-    document.getElementById('add-operations-btn').onclick = function() {
-        window.location.href = "{% url 'operation_add' %}";
-    };
-  </script>
+<script>
     
+    document.getElementById('add-operations-btn').onclick = function() {
+        window.location.href = "{% url 'operation_add' %}"
+        
+        };
+
+    document.getElementById('mod-operations-btn').onclick = function() {
+        let selectedOperations = [];
+        document.querySelectorAll('.operation-checkbox:checked').forEach(function(checkbox) {
+            selectedOperations.push(checkbox.dataset.pk);
+          });
+
+          if (selectedOperations.length > 0) {
+            
+            let pk = selectedOperations[0];
+            let url = `/entry/${pk}/`
+            window.location.href = url;            
+            
+          } else {
+              alert('Please select at least one operation to modify.');
+          }
+     };
+   
+</script>
+
 {% endblock %}
