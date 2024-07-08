@@ -1,14 +1,16 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render
 from django.views.generic import View,ListView, CreateView, UpdateView
 from django.urls import reverse_lazy
 from .forms import OperacionesForm
-from django.http import HttpResponse
-from django.utils.text import slugify
 from .models import *
-import json
-from django.http import HttpResponseBadRequest
-from django.http import JsonResponse
-from django.template.loader import render_to_string
+
+# from django.shortcuts import redirect
+# from django.utils.text import slugify
+# from django.http import HttpResponse
+# import json
+# from django.http import HttpResponseBadRequest
+# from django.http import JsonResponse
+# from django.template.loader import render_to_string
 
 # Create your views here.
 

@@ -14,6 +14,9 @@ class OperacionesForm(forms.ModelForm):
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
         self.fields['subcategory'].queryset = Subcategory.objects.none()
+        #self.fields['name'].initial = 'OPT'
+    
+
 
         if 'category' in self.data:
             try:
