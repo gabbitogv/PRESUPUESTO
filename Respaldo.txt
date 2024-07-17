@@ -1,6 +1,0 @@
-
-//window.location.href = "{% url 'operation_change' operation.pk %}";
-//   alert('Número de operaciones seleccionadas: '+ selectedOperations);
-            //let pk = selectedOperations[0];
-            //let url = `/entry/${pk}/`
-            //window.location.href = url;
