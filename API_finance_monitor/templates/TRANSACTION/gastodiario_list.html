@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+
+{% block title %}Finance Monitor{% endblock %}
+
+{% block content %}
+
+{% load custom_filters %}
+
+<style>
+    .text-center {
+        text-align: center;
+    }
+
+    .currency-input {
+            text-align: right;
+        }
+</style>
+<h2>View Module » Daily Purchase</h2>
+
+<div>
+    <button onclick="redirectToPage('/')">Return</button>
+    <button id="add-gd-btn" type="button" class="btn btn-primary">Add Expenses</button>
+    <button id="mod-gd-btn" type="button" class="btn btn-secondary">Modify Expenses</button>
+</div>
+<br>
+
+<table border="1">
+    <thead>
+        <tr>
+            <th>Name</th>            
+            <th>Diary Spend</th>            
+            <th>Way to Pay</th>
+            <th>Creation Date</th>
+            <th>Amount</th>
+            <th>Select</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for gd in gds %}
+            <tr>                
+                <td>{{ gd.name }}</td>
+                <td>{{ gd.daily_purchase }}</td>
+                <td>{{ gd.fpag }}</td>                
+                <td>{{ gd.fecha_creacion }}</td>
+                <td class="currency-input">{{ gd.monto | currency_format }}</td>
+                <td class="text-center"><input type="checkbox" class="gd-checkbox" data-pk="{{ gd.pk }}"></td>
+            </tr> 
+        {% empty %}
+            <tr>
+                 <td colspan="6">No expenses in the database. <a href="{% url 'gastodiario_add' %}">Add the first expenses</a>.</td>
+            </tr>       
+        {% endfor %}
+    
+    <tr>
+        <td colspan="4"><b> TOTAL:</b></td>
+        <td>{{ gds|sumargd}}</td>        
+    </tr>
+    
+    </tbody>
+    sumargd
+</table>
+
+<script>
+
+    function redirectToPage(url) {            
+            window.location.href = url;
+            };
+
+    document.getElementById('add-gd-btn').onclick = function() {
+        window.location.href = "{% url 'gastodiario_add' %}"
+        
+        };
+    
+        document.getElementById('mod-gd-btn').onclick = function() {
+        let selectedOperations = [];
+        document.querySelectorAll('.gd-checkbox:checked').forEach(function(checkbox) {
+            selectedOperations.push(checkbox.dataset.pk);
+          });
+
+          if (selectedOperations.length > 0) {
+            
+            let pk = selectedOperations[0];
+            let url = `/gd/entry/${pk}/`
+            window.location.href = url;            
+            
+          } else {
+              alert('Please select at least one expenses to modify.');
+          }
+     };
+
+</script>
+
+{% endblock %}
+
+

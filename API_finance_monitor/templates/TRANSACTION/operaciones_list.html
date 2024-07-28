@@ -19,6 +19,7 @@
 <h2>View Module » Operations Management</h2>
 
 <div>
+    <button onclick="redirectToPage('/')">Return</button>
     <button id="add-operations-btn" type="button" class="btn btn-primary">Add Operations</button>
     <button id="mod-operations-btn" type="button" class="btn btn-secondary">Modify Operations</button>
 </div>
@@ -27,19 +28,19 @@
 <table border="1">
     <thead>
         <tr>
-            <th>Nombre</th>
-            <th>Fecha Creacion</th>
-            <th>Categoria</th>
-            <th>Subcategoria</th>
-            <th>Fecha Pago</th>
-            <th>Monto</th>                                 
-            <th>Seleccionar</th>            
+            <th>Name</th>
+            <th>Creation Date</th>
+            <th>Category</th>
+            <th>Subcategory</th>
+            <th>Payment Date</th>
+            <th>Amount</th>                                 
+            <th>Select</th>            
         </tr>
     </thead>
     <tbody>
         {% for operation in operations %}
             <tr>                
-                <td><a href="">{{ operation.name }}</a></td>
+                <td>{{ operation.name }}</td>
                 <td>{{ operation.fecha_creacion }}</td>
                 <td>{{ operation.category }}</td>
                 <td>{{ operation.subcategory }}</td>
@@ -57,13 +58,18 @@
         <!-- Suma de resultados -->
     <tr>
         <td colspan="5"><b> TOTAL:</b></td>
-        <td>{{ operations|multiplicar_y_sumar}}</td>
-        <td></td>
+        <td>{{ operations|multiplicar_y_sumar}}</td>        
     </tr>
 
     </tbody>    
+</table>
 
 <script>
+
+    function redirectToPage(url) {            
+        window.location.href = url;
+        };
+
     
     document.getElementById('add-operations-btn').onclick = function() {
         window.location.href = "{% url 'operation_add' %}"
@@ -86,9 +92,8 @@
               alert('Please select at least one operation to modify.');
           }
      };
-       
+    
+    
 </script>
 
 {% endblock %}
-<!-- <td>{{ operation.multiplicador }}</td>
-<td class="currency-input">{{ operation.monto | currency_format }}</td>  -->

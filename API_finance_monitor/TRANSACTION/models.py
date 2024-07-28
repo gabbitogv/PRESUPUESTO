@@ -46,3 +46,29 @@ def update_name_with_id(sender, instance, created, **kwargs):
     if created and instance.name =='OPT':
         instance.name = f"OPT{instance.id}"
         instance.save()
+
+class Gasto_Diario(models.Model):
+    
+    name = models.CharField(max_length=30)
+    daily_purchase = models.CharField(max_length=30)
+    fpag = models.CharField(max_length=30)
+    monto =  models.IntegerField(default=0)
+    fecha_creacion = models.DateField(null=False, blank=False)
+
+    def __str__(self):
+        return self.name
+    
+class Category_GD(models.Model):
+    
+    name = models.CharField(max_length=30)
+    class_gd = models.CharField(max_length=30)
+
+    def __str__(self):
+        return self.name 
+
+class fpag(models.Model):
+    
+    name = models.CharField(max_length=30)      
+
+    def __str__(self):
+        return self.name

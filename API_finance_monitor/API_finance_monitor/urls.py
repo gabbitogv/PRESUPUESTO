@@ -23,5 +23,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('',Inicio.as_view(),name = ''),
     path('ingreso',Ingresos.as_view(),name = 'ingresos'),
-    path('entry/', include('TRANSACTION.urls')),        
+    path('', include('TRANSACTION.urls')),               
 ]

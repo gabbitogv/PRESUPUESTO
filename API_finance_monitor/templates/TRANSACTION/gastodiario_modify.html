@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+  <h2>Modify Form</h2>
+
+  <form method="post" id="gastodiarioForm">
+
+    {% csrf_token %}
+    <fieldset>
+    <legend>Expenses</legend>
+    <table>
+
+        <tr>
+            <th><label for="id_name">Name:</label></th>
+            <td>{{ form.name }}</td>
+          </tr>
+    
+          <tr>
+            <th><label for="id_diaryspend">Diary Spend:</label></th>
+            <td>{{ form.daily_purchase }}</td>
+          </tr>
+    
+          <tr>
+            <th><label for="id_fpag">Way to Pay:</label></th>
+            <td>{{ form.fpag }}</td>
+          </tr>
+                
+          <tr>
+            <th><label for="id_fecha_creacion">Creation Date:</label></th>              
+            <td><input type="date" id="id_fecha_creacion" name="fecha_creacion" value="{{ form.instance.fecha_creacion|date:"Y-m-d" }}"></td> 
+          </tr>
+    
+          <th><label for="id_monto">Amount:</label></th>
+              <td>{{ form.monto }}</td>          
+               
+          </tr>
+
+    </table>
+    </fieldset>
+    <br>
+    <hr>
+    <br>
+
+<button type="submit">Save</button>    
+<a href="{% url 'gastodiario_changelist' %}">Nevermind</a>
+  </form>
+
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+{% endblock %}

@@ -11,31 +11,31 @@
     <legend>Operation</legend>
     <table>
       <tr>
-          <th><label for="id_name">Nombre:</label></th>
+          <th><label for="id_name">Name:</label></th>
           <td>{{ form.name }}</td>
       </tr>
       
       <tr>
-        <th><label for="id_fecha_creacion">Fecha de creación:</label></th>              
+        <th><label for="id_fecha_creacion">Creation Date:</label></th>              
         <td><input type="date" id="id_fecha_creacion" name="fecha_creacion" value="{{ form.instance.fecha_creacion|date:"Y-m-d" }}"></td> 
-      </tr>
-      
+      </tr>         
+
       <tr>
-        <th><label for="id_category">Categoría:</label></th>
+        <th><label for="id_category">Category:</label></th>
         <td>{{ form.category }}</td>
       </tr>
       
       <tr>
-        <th><label for="id_subcategory">Subcategoría:</label></th>
+        <th><label for="id_subcategory">Subcategory:</label></th>
         <td>{{ form.subcategory }}</td>
       </tr>
       
       <tr>
-        <th><label for="id_fecha_pago">Fecha de pago:</label></th>        
+        <th><label for="id_fecha_pago">Payment Date:</label></th>        
         <td><input type="date" id="id_fecha_pago" name="fecha_pago" value="{{ form.instance.fecha_pago|date:"Y-m-d" }}"></td>        
       </tr>
     
-      <th><label for="id_monto">Monto:</label></th>
+      <th><label for="id_monto">Amount:</label></th>
           <td>{{ form.monto }}</td>
            
       </tr>             

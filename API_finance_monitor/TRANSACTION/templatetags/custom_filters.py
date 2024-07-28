@@ -4,17 +4,35 @@ register = template.Library()
 
 @register.filter
 def currency_format(value):
-    return "${:,.2f}".format(value)
+    if value < 0:
+        return "$ {:,.0f} )".format(value).replace('.', ',').replace(',', '.').replace('-', '( ')
+    else:
+        return "$ {:,.0f}".format(value).replace('.', ',').replace(',', '.')
+
+
+@register.filter
+def sumargd(gds):
+    suma = 0
+    for gd in gds:
+        try:
+            resultado = float(gd.monto)
+            suma += resultado
+        except (ValueError, TypeError):
+            pass  # Manejo de errores si los datos no son válidos
+
+    if suma < 0:
+        return "$ {:,.0f} )".format(suma).replace('.', ',').replace(',', '.').replace('-', '( ')
+    else:
+        return "$ {:,.0f}".format(suma).replace('.', ',').replace(',', '.')            
 
 @register.filter
 def multiplicar(monto, multiplicador):
-    try:
+     try:
         resultado = float(monto) * float(multiplicador)
-        #return f"$ {resultado:.0f}"
         return "$ {:,.0f}".format(resultado).replace('.', ',').replace(',', '.') 
         
-    except ValueError:
-        return monto
+     except ValueError:
+         return monto
 
 @register.filter
 def multiplicar_y_sumar(operations):
@@ -27,3 +45,4 @@ def multiplicar_y_sumar(operations):
             pass  # Manejo de errores si los datos no son válidos
 
     return "$ {:,.0f}".format(suma).replace('.', ',').replace(',', '.')
+
