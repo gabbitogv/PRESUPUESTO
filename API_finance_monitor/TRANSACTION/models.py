@@ -33,13 +33,13 @@ class Operaciones(models.Model):
         return self.name
 
     def save(self, *args, **kwargs):
-        if not self.id:  # Si el objeto aún no tiene ID, se guarda primero
+        if not self.id:  
             super().save(*args, **kwargs)
-        if self.name=='OPT':  # Si el campo 'name' está vacío
-            self.name = f"OPT{str(self.id)}"  # Asigna el valor del 'id' al 'name'
-            super().save(*args, **kwargs)  # Guarda el objeto de nuevo con el 'name' actualizado
+        if self.name=='OPT':  
+            self.name = f"OPT{str(self.id)}" 
+            super().save(*args, **kwargs)  
         else:
-            super().save(*args, **kwargs) # Guarda el objeto normalmente si 'name' ya tiene valor
+            super().save(*args, **kwargs)
 
 @receiver(post_save, sender=Operaciones)
 def update_name_with_id(sender, instance, created, **kwargs):
@@ -49,7 +49,7 @@ def update_name_with_id(sender, instance, created, **kwargs):
 
 class Gasto_Diario(models.Model):
     
-    name = models.CharField(max_length=30)
+    name = models.CharField(max_length=30,default='GD')
     daily_purchase = models.CharField(max_length=30)
     fpag = models.CharField(max_length=30)
     monto =  models.IntegerField(default=0)
@@ -58,6 +58,21 @@ class Gasto_Diario(models.Model):
     def __str__(self):
         return self.name
     
+    def save(self,*args,**kwargs):
+        if not self.id:
+            super().save(*args,**kwargs)
+        if self.name=='GD':
+            self.name = f"GD{str(self.id)}"
+            super().save(*args,**kwargs)
+        else:
+            super().save(*args, **kwargs)
+
+@receiver(post_save, sender=Gasto_Diario)
+def update_name_with_id(sender, instance, created, **kwargs):
+    if created and instance.name =='GD':
+        instance.name = f"GD{instance.id}"
+        instance.save()
+
 class Category_GD(models.Model):
     
     name = models.CharField(max_length=30)

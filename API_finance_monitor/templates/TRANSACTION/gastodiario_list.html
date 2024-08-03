@@ -18,10 +18,23 @@
 <h2>View Module » Daily Purchase</h2>
 
 <div>
+    <h3>Menu</h3>
     <button onclick="redirectToPage('/')">Return</button>
     <button id="add-gd-btn" type="button" class="btn btn-primary">Add Expenses</button>
     <button id="mod-gd-btn" type="button" class="btn btn-secondary">Modify Expenses</button>
 </div>
+
+<hr>
+
+<div>
+    <h3>Filter Month-Year</h2>
+    <form method="get" action="">
+        <input type="month" name="month_filter" value="{{ selected_month }}" min="{{ min_date }}" max="{{ max_date }}">
+        <button type="submit">Filter</button>
+        <button type="button" id="clear-filter-btn">Clear Filter</button>
+    </form>
+</div>
+
 <br>
 
 <table border="1">
@@ -42,22 +55,22 @@
                 <td>{{ gd.daily_purchase }}</td>
                 <td>{{ gd.fpag }}</td>                
                 <td>{{ gd.fecha_creacion }}</td>
-                <td class="currency-input">{{ gd.monto | currency_format }}</td>
+                <td class="currency-input">{{ gd.monto|currency_format }}</td>
                 <td class="text-center"><input type="checkbox" class="gd-checkbox" data-pk="{{ gd.pk }}"></td>
             </tr> 
         {% empty %}
             <tr>
                  <td colspan="6">No expenses in the database. <a href="{% url 'gastodiario_add' %}">Add the first expenses</a>.</td>
             </tr>       
-        {% endfor %}
-    
+        {% endfor %}    
+    <!-- Suma de resultados -->
     <tr>
         <td colspan="4"><b> TOTAL:</b></td>
-        <td>{{ gds|sumargd}}</td>        
+        <td>{{ gds|sumargd}}</td>       
     </tr>
     
     </tbody>
-    sumargd
+    
 </table>
 
 <script>
@@ -88,8 +101,12 @@
           }
      };
 
+     document.getElementById('clear-filter-btn').onclick = function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        urlParams.delete('month_filter');
+        window.location.search = urlParams.toString();
+    };
+
 </script>
 
 {% endblock %}
-
-

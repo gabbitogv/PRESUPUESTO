@@ -19,10 +19,23 @@
 <h2>View Module » Operations Management</h2>
 
 <div>
+    <h3>Menu</h3>
     <button onclick="redirectToPage('/')">Return</button>
     <button id="add-operations-btn" type="button" class="btn btn-primary">Add Operations</button>
-    <button id="mod-operations-btn" type="button" class="btn btn-secondary">Modify Operations</button>
+    <button id="mod-operations-btn" type="button" class="btn btn-secondary">Modify Operations</button>    
 </div>
+
+<hr>
+
+<div>
+    <h3>Filter Month-Year</h2>
+    <form method="get" action="">
+        <input type="month" name="month_filter" value="{{ selected_month }}" min="{{ min_date }}" max="{{ max_date }}">
+        <button type="submit">Filter</button>
+        <button type="button" id="clear-filter-btn">Clear Filter</button>
+    </form>
+</div>
+
 <br>
 
 <table border="1">
@@ -45,7 +58,7 @@
                 <td>{{ operation.category }}</td>
                 <td>{{ operation.subcategory }}</td>
                 <td>{{ operation.fecha_pago }}</td>                               
-                <td class="currency-input">{{ operation.monto | multiplicar:operation.multiplicador }}</td>                
+                <td class="currency-input">{{ operation.monto }}</td>        
                 <td class="text-center"><input type="checkbox" class="operation-checkbox" data-pk="{{ operation.pk }}"></td>
             </tr>       
         
@@ -56,10 +69,7 @@
         {% endfor %}     
         
         <!-- Suma de resultados -->
-    <tr>
-        <td colspan="5"><b> TOTAL:</b></td>
-        <td>{{ operations|multiplicar_y_sumar}}</td>        
-    </tr>
+    
 
     </tbody>    
 </table>
@@ -92,8 +102,13 @@
               alert('Please select at least one operation to modify.');
           }
      };
-    
-    
+
+     document.getElementById('clear-filter-btn').onclick = function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        urlParams.delete('month_filter');
+        window.location.search = urlParams.toString();
+    };
+          
 </script>
 
 {% endblock %}

@@ -2,15 +2,8 @@ from django.shortcuts import render
 from django.views.generic import View,ListView, CreateView, UpdateView
 from django.urls import reverse_lazy
 from .forms import OperacionesForm,Gasto_DiarioForm
+import datetime
 from .models import *
-
-# from django.shortcuts import redirect
-# from django.utils.text import slugify
-# from django.http import HttpResponse
-# import json
-# from django.http import HttpResponseBadRequest
-# from django.http import JsonResponse
-# from django.template.loader import render_to_string
 
 # Create your views here.
 
@@ -25,18 +18,47 @@ class Ingresos(View):
         subcategories = Subcategory.objects.all()
         return render(request, 'ingresos.html', {'categories': categories,'subcategories': subcategories})
         
+# class OperacionesListView(ListView):
+#      model = Operaciones
+#      form_class = OperacionesForm
+#      context_object_name = 'operations'
+#      template_name ='TRANSACTION/operaciones_list.html'    
+
+#      def get_queryset(self):
+#          queryset = super().get_queryset().select_related('category', 'subcategory')
+#          for operacion in queryset:
+#              operacion.multiplicador = operacion.subcategory.multiplicador
+#          return queryset
+
 class OperacionesListView(ListView):
-    model = Operaciones
-    form_class = OperacionesForm
-    context_object_name = 'operations'
-    template_name ='TRANSACTION/operaciones_list.html'    
+      model = Operaciones
+      form_class = OperacionesForm
+      context_object_name = 'operations'
+      template_name ='TRANSACTION/operaciones_list.html'    
 
-    def get_queryset(self):
-        queryset = super().get_queryset().select_related('category', 'subcategory')
-        for operacion in queryset:
-            operacion.multiplicador = operacion.subcategory.multiplicador
-        return queryset
+      def get_queryset(self):
+          queryset = super().get_queryset().select_related('category', 'subcategory')
+          for operacion in queryset:
+              operacion.multiplicador = operacion.subcategory.multiplicador
+          return queryset
+      
+      def get_queryset(self):
+         queryset = super().get_queryset()
+         month_filter = self.request.GET.get('month_filter')
 
+         if month_filter:
+             year, month = month_filter.split('-')
+             queryset = queryset.filter(fecha_creacion__year=year, fecha_creacion__month=month)
+         
+         return queryset
+      
+      def get_context_data(self, **kwargs):
+          context = super().get_context_data(**kwargs)
+          current_year = datetime.datetime.now().year
+          context['selected_month'] = self.request.GET.get('month_filter', '')
+          context['min_date'] = '2014-09'
+          context['max_date'] = f'{current_year}-12'
+          return context
 class OperacionesCreateView(CreateView):
     model = Operaciones
     form_class = OperacionesForm
@@ -54,12 +76,29 @@ def load_subcategories(request):
     subcategorys = Subcategory.objects.filter(category_id=category_id).order_by('name')
     return render(request,'API_finance_monitor/branch_dropdown_list_options.html',{'subcategorys': subcategorys})
 
-
 class GastoDiarioListView(ListView):
     model = Gasto_Diario
     form_class = Gasto_DiarioForm
     context_object_name = 'gds'
-    template_name ='TRANSACTION/gastodiario_list.html'
+    template_name = 'TRANSACTION/gastodiario_list.html'
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        month_filter = self.request.GET.get('month_filter')
+
+        if month_filter:
+            year, month = month_filter.split('-')
+            queryset = queryset.filter(fecha_creacion__year=year, fecha_creacion__month=month)
+
+        return queryset
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        current_year = datetime.datetime.now().year
+        context['selected_month'] = self.request.GET.get('month_filter', '')
+        context['min_date'] = '2014-09'
+        context['max_date'] = f'{current_year}-12'
+        return context    
 
 class GastoDiarioCreateView(CreateView):
     model = Gasto_Diario
